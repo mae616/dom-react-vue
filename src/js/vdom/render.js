@@ -1,3 +1,4 @@
+// 仮想DOM要素をリアルDOM要素にレンダリングする
 function renderElement({ tagName, attrs, children }) {
     const $el = document.createElement(tagName);
 
@@ -12,6 +13,7 @@ function renderElement({ tagName, attrs, children }) {
     return $el;
 }
 
+// 仮想DOMをレンダリングする
 export function render(vNode) {
     // 今回は行わないが、数値かどうかの判定も本来は必要
     if (typeof vNode === 'string') {

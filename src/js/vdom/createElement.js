@@ -1,3 +1,4 @@
+// 仮想DOMを作成する h
 export default (tagName, { attrs = {}, children = [] }) => {
     const vElement = Object.create(null);
 
@@ -7,11 +8,5 @@ export default (tagName, { attrs = {}, children = [] }) => {
         children,
     });
 
-    // console.log(vElement,
-    //     {
-    //         tagName,
-    //         attrs,
-    //         children,
-    //     });
     return vElement;
 }

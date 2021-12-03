@@ -1,5 +1,6 @@
 import h from './vdom/createElement';
 import { render } from './vdom/render';
+import { app } from './vdom/app';
 
 // アカウント一覧のJSON
 const INITIAL_STATE = {
@@ -79,7 +80,8 @@ const accountItem = (account) => {
     });
 };
 
-// View Stateをpropsという名前で受け取る
+// View（Stateをpropsという名前で受け取る）
+// propsから仮想DOMを作成する
 const view = (props) =>
     h('ul', {
         attrs: {
@@ -95,7 +97,9 @@ const view = (props) =>
         })
     });
 
-// レンダリングの実行
-const $app = render(view(INITIAL_STATE));
-const el = document.getElementById('app');
-el.appendChild($app);
+// コントローラの実行
+app({
+    root: '#app',
+    initialState: INITIAL_STATE,
+    view
+});
