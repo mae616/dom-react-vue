@@ -1,5 +1,12 @@
-const app = document.getElementById('app');
-const p = document.createElement('p');
-p.innerText = 'Hello World!';
+import h from './vdom/createElement';
+import { render } from './vdom/render';
 
-app.appendChild(p);
+
+const view = h('p', {
+    attrs: {},
+    children: ['仮想DOMの学習スタート！']
+});
+
+const $app = render(view);
+const el = document.getElementById('app');
+el.appendChild($app);
