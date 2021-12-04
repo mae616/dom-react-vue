@@ -32,10 +32,28 @@ const INITIAL_STATE = {
     ]
 };
 
+// Action
+// (acctionsオブジェクトにtoggleFollowの関数を作る)
+const actions = {
+    toggleFollow(state, id) {
+        // stateを（新しいオブジェクトで）変更する
+        const accounts = state.accounts.map((account) => {
+            if (account.id === id) {
+                return { ...account, isFollow: !account.isFollow };
+            } else {
+                return account;
+            }
+        });
+
+        // stateが増えた時のために、こういう書き方をしている
+        return { ...state, accounts };
+    }
+};
+
 // アカウントの仮想DOMを作成するViewのコード
 // (ReactやVueでいうコンポーネント)
 // UI を独立した再利用できる部品として使うことができる！
-const accountItem = (account) => {
+const accountItem = (account, action) => {
     return h('div', {
         attrs: {},
         children: [
@@ -65,7 +83,7 @@ const accountItem = (account) => {
                         attrs: {
                             type: 'button',
                             class: `followBtn ${account.isFollow ? 'isFollow' : ''}`,
-                            onclick: () => alert(account.name)
+                            onclick: () => action.toggleFollow(account.id)  // actionの実行
                         },
                         children: [account.isFollow ? 'フォロー中' : 'フォローする']
                     })
@@ -83,7 +101,10 @@ const accountItem = (account) => {
 
 // View（Stateをpropsという名前で受け取る）
 // propsから仮想DOMを作成する
-const view = (props) =>
+const view = (
+    props,
+    action
+) =>
     h('ul', {
         attrs: {
             class: 'accountList'
@@ -93,7 +114,7 @@ const view = (props) =>
                 attrs: {
                     class: 'accountList__item'
                 },
-                children: [accountItem(account)]
+                children: [accountItem(account, action)]
             })
         })
     });
@@ -102,5 +123,6 @@ const view = (props) =>
 app({
     root: '#app',
     initialState: INITIAL_STATE,
-    view
+    view,
+    actions
 });
