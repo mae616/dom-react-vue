@@ -1,5 +1,4 @@
 import h from './vdom/createElement';
-import { render } from './vdom/render';
 import { app } from './vdom/app';
 
 // アカウント一覧のJSON

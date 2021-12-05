@@ -1,13 +1,18 @@
-import { render } from './render';
+import { patch } from './patch';
 
 // コントローラー　app
+// 初回に実行
 export const app = ({ root, initialState, view, actions }) => {
     const $el = document.querySelector(root);
 
+    // クロージャで保持する変数
     let newNode;
+    let oldNode;
 
     let state = initialState;
 
+    // ディスパッチャー
+    // イベントドリブンに再レンダリング処理を登録
     const dispatcher = function (actions) {
         const dispatchedActions = {};
 
@@ -18,6 +23,7 @@ export const app = ({ root, initialState, view, actions }) => {
             dispatchedActions[key] = (option) => {
                 // toggleFollowとかでstateを作り直して、setStateで更新している
                 setState(action(state, option));
+
                 // 再レンダリング
                 renderDOM();
             };
@@ -45,10 +51,15 @@ export const app = ({ root, initialState, view, actions }) => {
     };
 
     // レンダリング
+    // 初回とイベントドリブンで実行された時呼ばれる
     const renderDOM = function () {
+        // newNodeを作る
         updateNode();
 
-        $el.appendChild(render(newNode));
+        // 差分をルートに反映する
+        patch($el, newNode, oldNode);
+        // oldNodeを保持
+        oldNode = newNode;
     };
 
     renderDOM();
